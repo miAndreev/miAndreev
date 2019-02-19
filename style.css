@@ -1,0 +1,60 @@
+#container {
+	height: 100%;
+	width: 100%;
+}
+
+#cpu {
+	/*height: 400px;*/
+	width: 60%;
+	margin: 5px;
+}
+
+#registers {
+	border-width: 1px;
+	border-style: solid;
+	border-color: black;
+	border: 1px solid black;
+	width: 200px;
+	padding: 5px;
+}
+
+.reg_cell {
+	border: 1px solid black;
+	text-align: center;			
+}
+
+#pc_container {
+	border: 1px solid black;
+	margin: 5px;
+}
+
+#alu {
+	border: 1px solid black;
+	width: 200px;
+	margin-top: 10px;
+	padding: 5px;
+}
+
+.alu-element {
+	height: 20px;
+	text-align: center;
+	width: 200px;
+	border: 1px solid black;
+}
+
+#pc_countiner {
+	border: 1px solid black;
+	text-align: center;
+	width: 200px;
+	margin: 10px 0px 10px 0px;
+	padding: 5px;
+}
+
+.cpu-element{
+	border: 1px solid black;
+	text-align: center;
+	margin: 10px 0px 10px 0px;
+	min-height: 20px;
+	width: 200px;
+	padding: 5px;
+}
