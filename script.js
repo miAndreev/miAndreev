@@ -163,6 +163,11 @@ function execute_in_alu(pc_value) {
 		var operation_result = operation_functions[current_instruction.operation](current_instruction.decoded_operands);
 		l(operation_result);
 		set_element_value('alu-result_value', operation_result);
+	} else {
+		set_element_value('alu-result_register', '');
+		set_element_value('alu-first_operand', '');
+		set_element_value('alu-second_operand', '');
+		set_element_value('alu-result_value', '');
 	}
 }
 
