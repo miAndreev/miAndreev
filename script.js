@@ -69,6 +69,27 @@ var operation_functions = {
 	}
 }
 
+function reset_visualisation() {
+	set_element_value("if-instruction-val", '');
+	set_element_value("id-instruction-val", '');
+
+	//reset all registers to 0
+	for (var i = valid_registers.length - 1; i >= 0; i--) {
+		var register = valid_registers[i];
+		set_register(register, 0);
+	}
+
+	var elements = document.getElementsByClassName('alu-element');
+	for (var i = elements.length - 1; i >= 0; i--) {
+		var e = elements[i];
+		e.innerText = '';
+	}
+
+	set_element_value('pc_countiner', 0);
+	set_element_value('instruction-fetch', '');
+	set_element_value('instruction-decode', '');
+}
+
 function change_pc() {
 	var current_pc = get_element_value('pc_countiner');
 	if (current_pc < instructions.length) {
