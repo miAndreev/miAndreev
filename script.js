@@ -50,12 +50,22 @@ function takt() {
 
 var operation_functions = {
 	add: function (operands) {
-		l(operands);
-		return operands[0] + operands[1]
+		return operands[0] + operands[1];
 	},
 	addi: function (operands) {
-		l(operands);
-		return operands[0] + operands[1]
+		return operation_functions.add(operands);
+	},
+	sub: function (operands) {
+		return operands[0] - operands[1];
+	},
+	subi: function (operands) {
+		return operation_functions.sub(operands);
+	},
+	mult: function (operands) {
+		return operands[0] - operands[1];
+	},
+	div: function (operands) {
+		return operands[0] - operands[1];
 	}
 }
 
