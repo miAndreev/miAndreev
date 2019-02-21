@@ -8,38 +8,45 @@
 </header>
 <body>
 	<div id="container">
-		<div id="cpu">
-			<div title="Programm Counter" id="pc_countiner">0</div>
-			<div title="intruction fetch" class="cpu-element">
-				<div id="instruction-fetch"></div>
-				<input type="hidden" name="if-instruction-val" id="if-instruction-val">
-			</div>
-			<div title="instruction decode" class="cpu-element">
-				<div id="instruction-decode"></div>
-				<input type="hidden" name="id-instruction-val" id="id-instruction-val">
-			</div>
-			<div id="registers" title="Registers">
-				<div title="Register 0" class="reg_cell" id="reg_cell-r0">0</div>
-				<div title="Register 1" class="reg_cell" id="reg_cell-r1">0</div>
-				<div title="Register 2" class="reg_cell" id="reg_cell-r2">0</div>
-				<div title="Register 3" class="reg_cell" id="reg_cell-r3">0</div>
-				<div title="Register 4" class="reg_cell" id="reg_cell-r4">0</div>
-				<div title="Register 5" class="reg_cell" id="reg_cell-r5">0</div>
-				<div title="Register 6" class="reg_cell" id="reg_cell-r6">0</div>
-				<div title="Register 7" class="reg_cell" id="reg_cell-r7">0</div>
-			</div>
-			<div title="ALU" id="alu">
-				<div title="Operation" id="alu-operation" class="alu-element"></div>
-				<div title="Result register" id="alu-result_register" class="alu-element"></div>
-				<div title="Operand register" id="alu-first_operand" class="alu-element"></div>
-				<div title="Operand register or constant" id="alu-second_operand" class="alu-element"></div>
-				<div title="ALU result" class="alu-element" id="alu-result_value"></div>
-				<input type="hidden" name="alu-instruction-val">
-			</div>
+		<div id="instruction-list-create">
+			<button type="button" onclick="add_new_instruction_select_element()">add</button>
+			<button type="button" onclick="generate_instruction_list()">start</button>
+			<div id="instructions"></div>
 		</div>
-		<button type="button" onclick="takt()">step</button>
-		<button type="button" onclick="reset_visualisation()">reset</button>
-		<button type="button" onclick="toggle_forward()">forward</button>
+		<div id="cpu-container" class="hidden">
+			<div id="cpu">
+				<div title="Programm Counter" id="pc_countiner">0</div>
+				<div title="instruction fetch" class="cpu-element">
+					<div id="instruction-fetch"></div>
+					<input type="hidden" name="if-instruction-val" id="if-instruction-val">
+				</div>
+				<div title="instruction decode" class="cpu-element">
+					<div id="instruction-decode"></div>
+					<input type="hidden" name="id-instruction-val" id="id-instruction-val">
+				</div>
+				<div id="registers" title="Registers">
+					<div title="Register 0" class="reg_cell" id="reg_cell-r0">0</div>
+					<div title="Register 1" class="reg_cell" id="reg_cell-r1">0</div>
+					<div title="Register 2" class="reg_cell" id="reg_cell-r2">0</div>
+					<div title="Register 3" class="reg_cell" id="reg_cell-r3">0</div>
+					<div title="Register 4" class="reg_cell" id="reg_cell-r4">0</div>
+					<div title="Register 5" class="reg_cell" id="reg_cell-r5">0</div>
+					<div title="Register 6" class="reg_cell" id="reg_cell-r6">0</div>
+					<div title="Register 7" class="reg_cell" id="reg_cell-r7">0</div>
+				</div>
+				<div title="ALU" id="alu">
+					<div title="Operation" id="alu-operation" class="alu-element"></div>
+					<div title="Result register" id="alu-result_register" class="alu-element"></div>
+					<div title="Operand register" id="alu-first_operand" class="alu-element"></div>
+					<div title="Operand register or constant" id="alu-second_operand" class="alu-element"></div>
+					<div title="ALU result" class="alu-element" id="alu-result_value"></div>
+					<input type="hidden" name="alu-instruction-val">
+				</div>
+			</div>
+			<button type="button" onclick="takt()">step</button>
+			<button type="button" onclick="reset_visualisation()">reset</button>
+			<button type="button" onclick="toggle_forward()">forward</button>
+		</div>
 	</div>
 </body>
 <script type="text/javascript" src="script.js"></script>
