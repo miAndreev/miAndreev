@@ -58,3 +58,32 @@
 	width: 200px;
 	padding: 5px;
 }
+
+.delete-button {
+	color: red;
+	background: greenyellow;
+	border-radius: 100px;
+	width: 15px;
+	padding: 3px;
+	text-align: center;
+	height: 15px;
+	float: left;
+	margin-right: 10px;
+	margin-top: 5px;
+}
+
+.hidden {
+	display: none;
+}
+
+#instructions {
+	margin-bottom: 10px;
+}
+
+select {
+	margin: 5px;
+}
+
+button {
+	margin: 5px;
+}
