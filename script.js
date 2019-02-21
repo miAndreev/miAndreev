@@ -5,6 +5,7 @@ var valid_instructions = ['noop', 'add', 'addi'];
 var buf = {value:0, register_id:'r0'};
 var pc_cont = document.getElementById("pc_countiner");
 var instructions = [];
+var enable_forward = false;
 
 function init_fkt() {
 	instructions.push({
@@ -69,6 +70,10 @@ var operation_functions = {
 	}
 }
 
+function toggle_forward() {
+	enable_forward = !enable_forward;
+}
+
 function reset_visualisation() {
 	set_element_value("if-instruction-val", '');
 	set_element_value("id-instruction-val", '');
@@ -79,6 +84,7 @@ function reset_visualisation() {
 		set_register(register, 0);
 	}
 
+	//reset alu elements
 	var elements = document.getElementsByClassName('alu-element');
 	for (var i = elements.length - 1; i >= 0; i--) {
 		var e = elements[i];
@@ -192,6 +198,29 @@ function execute_in_alu(pc_value) {
 	}
 }
 
+function get_result_from_alu() {
+	return get_element_value('alu-result_value');
+}
+
+function get_register_for_decode(current_instruction_number, register) {
+	var register_value = get_register(register);
+	l('register ' + register + ' is ' + register_value);
+	if (enable_forward && register !== 'r0') {
+		var prev_instr = instructions[current_instruction_number-1];
+		if (prev_instr && prev_instr.operands) {
+			if (prev_instr.result_register === register) {
+				register_value = get_result_from_alu();
+			}
+		}
+
+		if (buf.register_id === register) {
+			register_value = buf.value;
+		}
+	}
+
+	return Number(register_value);
+}
+
 function instruction_decode(pc_value) {
 	pc_value -= 1;
 	if (pc_value < 0) {
@@ -208,10 +237,8 @@ function instruction_decode(pc_value) {
 		for (var i = 0; i < current_instruction.operands.length; i++) {
 			var operand = current_instruction.operands[i];
 			if (is_valid_register(operand)) {
-				var register_value = get_register(operand);
-				l('register ' + operand + ' is ' + register_value);
+				var register_value = get_register_for_decode(pc_value, operand);
 				current_instruction.decoded_operands.push(Number(register_value));
-				l(current_instruction.decoded_operands);
 				display_format = display_format + ', ' + operand + '(' + register_value + ')';
 			} else if (! isNaN(operand)) {
 				current_instruction.decoded_operands.push(Number(operand));
