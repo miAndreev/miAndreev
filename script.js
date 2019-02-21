@@ -1,13 +1,129 @@
 //todo create end of programm
 var valid_registers = ['r0','r1','r2','r3','r4','r5','r6','r7'];
+var valid_registers_result = valid_registers.slice(1);
 var valid_instructions = ['noop', 'add', 'addi'];
+var constant_values = [0,1,2,3,4,5,6,7,8,9];
 
 var buf = {value:0, register_id:'r0'};
 var pc_cont = document.getElementById("pc_countiner");
 var instructions = [];
 var enable_forward = false;
 
-function init_fkt() {
+// start functions for instruction list creation
+function delete_element(event) {
+	var el = event.target.parentElement;
+	el.remove();
+}
+
+function generate_instruction_list() {
+	var instructions_local = [];
+	var instruction_elements = document.getElementsByClassName('instruction-element');
+	for (var i = 0; i < instruction_elements.length; i++) {
+		var el = instruction_elements[i];
+		instructions_local.push(generate_instruction_object(el));
+	}
+	instructions = instructions_local;
+
+	document.getElementById('instruction-list-create').classList.toggle('hidden');
+	document.getElementById('cpu-container').classList.toggle('hidden');
+	return instructions_local;
+}
+
+function generate_instruction_object(element) {
+	//var selects = element.childNodes;
+	var selects = element.getElementsByClassName('instruction');
+	var operation = selects[0].value;
+	var instruction_object = {};
+	instruction_object.operation = operation;
+	var text_format = operation;
+	if (operation !== 'noop') {
+		instruction_object.result_register = selects[1].value;
+		text_format = text_format + ' ' + instruction_object.result_register;
+		instruction_object.operands = [];
+		instruction_object.operands.push(selects[2].value);
+		if (operation === 'add') {
+			instruction_object.operands.push(selects[3].value);
+		} else {
+			instruction_object.operands.push(selects[4].value);
+		}
+		text_format = text_format + ', ' + instruction_object.operands.join(', ');
+	}
+	instruction_object.text_format = text_format;
+	return instruction_object;
+}
+
+function instruction_changed(event) {
+	var element = event.target;
+	var instruction = element.value;
+	var parentElement = element.parentElement;
+	var to_hide = [];
+	var to_show = [];
+	if (instruction === 'noop') {
+		to_hide.push(parentElement.getElementsByClassName('result-register'));
+		to_hide.push(parentElement.getElementsByClassName('first-operand'));
+		to_hide.push(parentElement.getElementsByClassName('second-operand'));
+		to_hide.push(parentElement.getElementsByClassName('constant'));
+	} else if (instruction === 'add') {
+		to_show.push(parentElement.getElementsByClassName('result-register'));
+		to_show.push(parentElement.getElementsByClassName('first-operand'));
+		to_show.push(parentElement.getElementsByClassName('second-operand'));
+		to_hide.push(parentElement.getElementsByClassName('constant'));
+	} else if (instruction === 'addi') {
+		to_show.push(parentElement.getElementsByClassName('result-register'));
+		to_show.push(parentElement.getElementsByClassName('first-operand'));
+		to_hide.push(parentElement.getElementsByClassName('second-operand'));
+		to_show.push(parentElement.getElementsByClassName('constant'));
+	}
+
+	for (var i = to_show.length - 1; i >= 0; i--) {
+		var el = to_show[i];
+		el[0].classList.remove('hidden');
+	}
+
+	for (var i = to_hide.length - 1; i >= 0; i--) {
+		var el = to_hide[i];
+		el[0].classList.add('hidden');
+	}
+}
+
+function add_new_instruction_select_element() {
+	var new_element = document.createElement("DIV");
+	new_element.className += 'instruction';
+	new_element.className += ' instruction-element';
+	innerHTML = '<div class="delete-button" onclick="delete_element(event)">X</div>';
+	innerHTML += generate_select_instruction('instruction instruction-name', valid_instructions, 'instruction_changed');
+	innerHTML += generate_select_instruction('instruction result-register hidden', valid_registers_result);
+	innerHTML += generate_select_instruction('instruction first-operand hidden', valid_registers);
+	innerHTML += generate_select_instruction('instruction second-operand hidden', valid_registers);
+	innerHTML += generate_select_instruction('instruction constant hidden', constant_values);
+
+	new_element.innerHTML = innerHTML;
+	document.getElementById('instructions').appendChild(new_element);
+}
+
+function generate_select_instruction(name, elements, callback) {
+	var select = '<select class="' + name + '"';
+	if (callback) {
+		select += ' onchange="' + callback + '(event)"';
+	}
+
+	select += '>';
+
+	for (var i = 0; i < elements.length; i++) {
+		var insr = elements[i];
+		var option = '<option value="' + insr + '">' + insr + '</option>';
+		select += option;
+	}
+
+	select += '</select>';
+	return select;
+}
+
+// add one instruction at the begining
+add_new_instruction_select_element();
+
+//load example programm
+function load_example() {
 	instructions.push({
 		operation: 'addi',
 		result_register: 'r1',
@@ -36,8 +152,6 @@ function init_fkt() {
 function l(arg) {
 	console.log(arg);
 }
-
-init_fkt();
 
 function takt() {
 	var pc_value = get_pc();
@@ -94,6 +208,10 @@ function reset_visualisation() {
 	set_element_value('pc_countiner', 0);
 	set_element_value('instruction-fetch', '');
 	set_element_value('instruction-decode', '');
+
+	//reset buffer values
+	buf.value = '0';
+	buf.register_id = 'r0';
 }
 
 function change_pc() {
